@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="icon" href="/public/favicon.svg">
+  <title>Frontend</title>
+
+  <script src="/scripts/index.js"></script>
+  <link rel="stylesheet" type="text/css" href="/styles/index.css">
+</head>
+
+
+<body>
+<section class="page">
+  <h1 class="header-text">QR 4</h1>
+
+  <section class="main-text">
+    <h3>QR найден!</h3>
+    <div id="text-container">
+      <p class="lighter">Отлично! Отправляйтесь на поиски следующих точек и QR'ов!</p>
+      <p>Вы нашли <span id="qr-counter"></span> QR-кодов. А всего их 7</p>
+      <details class="lighter">Все найденные QR'ы: <span id="qr-list"></span></details>
+    </div>
+  </section>
+
+  <div class="header-image"><img src="/public/done.svg" alt=""></div>
+</section>
+
+<script>
+  finishStage(4);
+
+  const finishedStages = loadFinishedStages();
+  document.getElementById('qr-list').innerText = JSON.stringify(finishedStages);
+  document.getElementById('qr-counter').innerText = String(finishedStages.length);
+
+  if (isAllStagesFinished()) {
+    const textContainerEl = document.getElementById('text-container');
+    textContainerEl.innerHTML = 'Вы нашли все QR\'ы! Найдите организатора этого конкурса и подойдите к нему. <br><br> Кликните на это сообщение, чтобы начать заново';
+    textContainerEl.addEventListener('click', () => {
+      if (confirm('Вы уверены, что хотите начать заново? Прогресс восстановить не получится')) {
+        clearFinishedStages();
+        location.href = location.href;
+      }
+    });
+  }
+</script>
+</body>
+</html>
