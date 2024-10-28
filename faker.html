@@ -6,16 +6,17 @@
   <link rel="icon" href="/party-meeting/assets/images/favicon.svg">
   <title>Party Meeting Game</title>
 
-  <script src="/party-meeting/assets/scripts/index.js"></script>
+  <script src="/party-meeting/assets/scripts/stages.js"></script>
+  <script src="/party-meeting/assets/scripts/pages.js"></script>
   <link rel="stylesheet" type="text/css" href="/party-meeting/assets/styles/index.css">
 </head>
 
 
 <body>
 <section class="page">
-  <h1 class="header-text">Faker 3</h1>
+  <h1 class="header-text">Faker 1</h1>
 
-  <section class="main-text">
+  <section class="main-text" id="main">
     <h3>Вы - отвлекающий персонаж</h3>
     <p class="lighter">Периодически в течение вечера к вам будут подходить ньюбики-игроки и просить от вас информацию о "вашем секретном месте". Их цель - найти 7 квестовых персонажей среди всех людей на вечеринке. Ваша цель - усложнить им задачу это сделать</p>
     <p><b>Ваша задача - немного поболтать с ними, чтобы у них оставались подозрения, что вы квестовый персонаж, но по итогу сказать, что у вас ничего нет и вы не можете им помочь. (Реальный квестовый персонаж бы дал им укзание, где искать QR)</b></p>
@@ -23,12 +24,24 @@
 
     <hr>
     <p>Вот то, что вам предстоит делать:</p>
-    <blockquote class="task">
-      Когда ньюбик приходит к вам, вы предлагаете ему выпить на баре (Пользоваться своим положением и предлагать выпить на брудершафт не обязательно :))
+    <blockquote class="task" id="task">
+      <!-- Text from js -->
     </blockquote>
   </section>
 
   <div class="header-image"><img src="/party-meeting/assets/images/person.svg" alt=""></div>
 </section>
+
+<script>
+  const queryValue = new URLSearchParams(location.search).get("key");
+
+  const pageData = Pages.fakers[queryValue];
+  if (pageData) {
+    const taskStr = pageData.task;
+    document.getElementById('task').innerHTML = taskStr;
+  } else {
+    document.getElementById('main').innerHTML = '<b><h1>Ошибка 404</h1></b> <p>Такой страницы не существует</p>'
+  }
+</script>
 </body>
 </html>

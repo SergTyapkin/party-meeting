@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="icon" href="/party-meeting/assets/images/favicon.svg">
+  <title>Party Meeting Game</title>
+
+  <script src="/party-meeting/assets/scripts/stages.js"></script>
+  <script src="/party-meeting/assets/scripts/pages.js"></script>
+  <link rel="stylesheet" type="text/css" href="/party-meeting/assets/styles/index.css">
+</head>
+
+
+<body>
+<section class="page">
+  <h1 class="header-text">QR 1</h1>
+
+  <section class="main-text" id="main">
+    <h3>QR найден!</h3>
+    <div id="text-container">
+      <p class="lighter">Отлично! Отправляйтесь на поиски следующих точек и QR'ов!</p>
+      <p>Вы нашли <span id="qr-counter"></span> QR-кодов. А всего их <span id="qr-codes-total"></span></p>
+      <details class="lighter">
+        <p>Все найденные QR'ы: <span id="qr-list"></span></p>
+        <button class="button-restart" id="restart-button">Начать заново</button>
+      </details>
+    </div>
+  </section>
+
+  <div class="header-image"><img src="/party-meeting/assets/images/done.svg" alt=""></div>
+</section>
+
+<script>
+  function restartAll() {
+    if (confirm('Вы уверены, что хотите начать заново? Прогресс восстановить не получится')) {
+      clearFinishedStages();
+      history.go(-(history.length - 1));
+      history.replaceState({}, null, '/');
+    }
+  }
+  document.getElementById('restart-button').addEventListener('click', restartAll);
+
+
+  const queryValue = new URLSearchParams(location.search).get("key");
+
+  const pageData = Pages.qrCodes[queryValue];
+  if (pageData) {
+    finishStage(pageData.value);
+
+    const finishedStages = loadFinishedStages();
+    document.getElementById('qr-list').innerText = JSON.stringify(finishedStages);
+    document.getElementById('qr-counter').innerText = String(finishedStages.length);
+    document.getElementById('qr-codes-total').innerText = String(Stages.length);
+
+    if (isAllStagesFinished()) {
+      const textContainerEl = document.getElementById('text-container');
+      textContainerEl.innerHTML = 'Вы нашли все QR\'ы! Найдите организатора этого конкурса и подойдите к нему. <br><br> Кликните на это сообщение, чтобы начать заново';
+      textContainerEl.addEventListener('click', restartAll);
+    }
+  } else {
+    document.getElementById('main').innerHTML = '<b><h1>Ошибка 404</h1></b> <p>Такой страницы не существует</p>'
+  }
+</script>
+</body>
+</html>
