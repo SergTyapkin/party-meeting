@@ -1,4 +1,4 @@
-window.Stages = [1, 2, 3, 4, 5, 6, 7]
+window.Stages = [1, 2, 3, 4, 5, 6]
 const localStorageName = 'finished-stages'
 
 window.loadFinishedStages = function() {
